@@ -1,8 +1,8 @@
 import { Client, Account, Databases, Storage, Teams } from 'appwrite';
 
 // Get environment variables with fallbacks
-const APPWRITE_ENDPOINT = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || 'https://cloud.appwrite.io/v1';
-const APPWRITE_PROJECT_ID = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID || 'your_project_id_here';
+const APPWRITE_ENDPOINT = process.env.APPWRITE_ENDPOINT || 'https://cloud.appwrite.io/v1';
+const APPWRITE_PROJECT_ID = process.env.APPWRITE_PROJECT_ID || 'your_project_id_here';
 
 // Initialize Appwrite client
 const client = new Client()
@@ -16,19 +16,19 @@ export const storage = new Storage(client);
 export const teams = new Teams(client);
 
 // Database and collection IDs with fallbacks
-export const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID || 'your_database_id_here';
-export const USERS_COLLECTION_ID = process.env.NEXT_PUBLIC_APPWRITE_USERS_COLLECTION_ID || 'your_users_collection_id_here';
+export const DATABASE_ID = process.env.APPWRITE_DATABASE_ID || 'your_database_id_here';
+export const USERS_COLLECTION_ID = process.env.APPWRITE_USERS_COLLECTION_ID || 'your_users_collection_id_here';
 export const TREE_NODES_COLLECTION_ID = '68ac6ed6001e3c93925b';
 export const USER_STATS_COLLECTION_ID = '68ac711f00230f958382';
 export const PINS_COLLECTION_ID = '68ac892e003d1b1887e4';
-export const REWARD_TIERS_COLLECTION_ID = process.env.NEXT_PUBLIC_APPWRITE_REWARD_TIERS_COLLECTION_ID || 'your_reward_tiers_collection_id_here';
+export const REWARD_TIERS_COLLECTION_ID = process.env.APPWRITE_REWARD_TIERS_COLLECTION_ID || 'your_reward_tiers_collection_id_here';
 export const USER_REWARDS_COLLECTION_ID = '68ac99dc0011ac0661f7';
 export const PAYMENTS_COLLECTION_ID = '68ac9b66002599ceb772';
 export const WITHDRAWALS_COLLECTION_ID = '68acbba40009d948abfd';
 export const EVENTS_COLLECTION_ID = '68acbea40004a2573a8e';
 
 // Storage bucket IDs
-export const ASSETS_BUCKET_ID = process.env.NEXT_PUBLIC_APPWRITE_PAYMENTS_BUCKET_ID || '68adb7e3001867868a49';
+export const ASSETS_BUCKET_ID = process.env.APPWRITE_PAYMENTS_BUCKET_ID || '68adb7e3001867868a49';
 
 // Helper functions
 export const generateIdempotencyKey = (action: string, userId: string) => {
