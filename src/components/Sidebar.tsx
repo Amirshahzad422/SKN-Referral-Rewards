@@ -2,13 +2,29 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 
 const Sidebar = () => {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [sidebarLoading, setSidebarLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (user) {
+        // Check if user is the hardcoded admin
+        const adminStatus = user.email === 'engineeramirshahzad11@gmail.com';
+        setIsAdmin(adminStatus);
+      } else {
+        setIsAdmin(false);
+      }
+      setSidebarLoading(false);
+    };
+    checkAdmin();
+  }, [user]);
 
   const menuItems = [
     { name: 'Dashboard', href: '/', icon: '📊' },
@@ -25,13 +41,18 @@ const Sidebar = () => {
     { name: 'Change Password', href: '/change-password', icon: '🔒' },
   ];
 
-  // Admin menu items (only show if user is admin)
   const adminMenuItems = [
     { name: 'Admin Dashboard', href: '/admin', icon: '⚙️' },
     { name: 'Create Root User', href: '/admin/create-root', icon: '👑' },
   ];
 
-  const allMenuItems = [...menuItems, ...(user ? adminMenuItems : [])];
+  if (authLoading || sidebarLoading) {
+    return null; // Or a loading spinner
+  }
+
+  if (!user) {
+    return null; // Don't render sidebar if not logged in
+  }
 
   return (
     <>
@@ -59,15 +80,15 @@ const Sidebar = () => {
                 <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-3">
                   <span className="text-deep-indigo-600 font-bold text-sm">SKN</span>
                 </div>
-                <h3 className="text-white font-semibold text-lg">zohaib</h3>
-                <p className="text-gray-300 text-sm">zohaibishfaq.ajk@gmail.com</p>
+                <h3 className="text-white font-semibold text-lg">{user.name || 'Admin User'}</h3>
+                <p className="text-gray-300 text-sm">{user.email}</p>
                 <div className="flex items-center mt-2">
-                  <span className="text-gray-300 text-sm">03367516504</span>
+                  <span className="text-gray-300 text-sm">{user.phone || 'N/A'}</span>
                   <button className="ml-2 text-gray-300 hover:text-white">
                     👁️
                   </button>
                 </div>
-                {user && (
+                {isAdmin && (
                   <div className="mt-2">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                       Admin
@@ -79,10 +100,8 @@ const Sidebar = () => {
 
             {/* Navigation Menu */}
             <nav className="px-4 py-6 space-y-2"> {/* Removed flex-1 and overflow from here */}
-              {allMenuItems.map((item) => {
+              {menuItems.map((item) => {
                 const isActive = pathname === item.href;
-                const isAdminItem = adminMenuItems.some(adminItem => adminItem.href === item.href);
-                
                 return (
                   <Link
                     key={item.href}
@@ -93,24 +112,58 @@ const Sidebar = () => {
                         ? 'bg-white text-deep-indigo-600' // Active state color changed
                         : 'text-gray-300 hover:bg-deep-indigo-500 hover:text-white'
                       }
-                      ${isAdminItem ? 'border-l-4 border-yellow-400' : ''}
                     `}
+                    onClick={() => setIsMobileMenuOpen(false)} // Close mobile menu on click
                   >
                     <span className="mr-3 text-lg">{item.icon}</span>
                     <span className="font-medium">{item.name}</span>
-                    {isAdminItem && (
-                      <span className="ml-auto text-xs bg-yellow-400 text-yellow-900 px-2 py-1 rounded">
-                        ADMIN
-                      </span>
-                    )}
                   </Link>
                 );
               })}
+
+              {isAdmin && (
+                <>
+                  <div className="border-t border-deep-indigo-500 my-4 pt-4">
+                    <p className="text-gray-400 text-xs uppercase px-4 mb-2">Admin</p>
+                    {adminMenuItems.map((item) => {
+                      const isActive = pathname === item.href;
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className={`
+                            flex items-center px-4 py-3 rounded-lg transition-colors duration-200
+                            ${isActive
+                              ? 'bg-white text-deep-indigo-600'
+                              : 'text-gray-300 hover:bg-deep-indigo-500 hover:text-white'
+                            }
+                          `}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          <span className="mr-3 text-lg">{item.icon}</span>
+                          <span className="font-medium">{item.name}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
             </nav>
 
             {/* Logout Button */}
             <div className="p-4 border-t border-deep-indigo-500">
-              <button className="w-full flex items-center justify-center px-4 py-3 bg-deep-indigo text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-medium">
+              <button
+                onClick={() => {
+                  // For hardcoded admin, just redirect to login
+                  if (user.email === 'engineeramirshahzad11@gmail.com') {
+                    window.location.href = '/login';
+                  } else {
+                    // For real users, use the logout function
+                    // logout();
+                  }
+                }}
+                className="w-full flex items-center justify-center px-4 py-3 bg-deep-indigo text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-medium"
+              >
                 🚪 LOG OUT
               </button>
             </div>

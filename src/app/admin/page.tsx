@@ -47,11 +47,16 @@ export default function AdminDashboard() {
   const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
-    } else if (user) {
-      loadPayments();
-      loadUsers();
+    if (!loading) {
+      // Check if user is the hardcoded admin
+      const isAdmin = user?.email === 'engineeramirshahzad11@gmail.com';
+      
+      if (!user || !isAdmin) {
+        router.push('/login');
+      } else {
+        loadPayments();
+        loadUsers();
+      }
     }
   }, [user, loading, router]);
 
@@ -134,7 +139,9 @@ export default function AdminDashboard() {
     );
   }
 
-  if (!user) {
+  // Check if user is the hardcoded admin
+  const isAdmin = user?.email === 'engineeramirshahzad11@gmail.com';
+  if (!user || !isAdmin) {
     return null; // Will redirect to login
   }
 
@@ -145,6 +152,11 @@ export default function AdminDashboard() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
           <p className="text-gray-600 mt-2">Manage payments, users, and system operations</p>
+          <div className="mt-2">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+              Logged in as: {user.email}
+            </span>
+          </div>
         </div>
 
         {/* Stats Cards */}
