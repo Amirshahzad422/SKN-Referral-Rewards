@@ -48,15 +48,17 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (!loading) {
-      // Check if user is the hardcoded admin
-      const isAdmin = user?.email === 'engineeramirshahzad11@gmail.com' || localStorage.getItem('isAdmin') === 'true';
+      // Check if user is the specific admin user
+      const isAdmin = user?.email === 'engineeramirshahzad11@gmail.com' || localStorage.getItem('adminEmail') === 'engineeramirshahzad11@gmail.com';
       
-      if (!user && !isAdmin) {
-        router.push('/login');
-      } else {
-        loadPayments();
-        loadUsers();
+      if (!isAdmin) {
+        // Redirect non-admin users to main dashboard
+        router.push('/');
+        return;
       }
+      
+      loadPayments();
+      loadUsers();
     }
   }, [user, loading, router]);
 
@@ -139,10 +141,10 @@ export default function AdminDashboard() {
     );
   }
 
-  // Check if user is the hardcoded admin
-  const isAdmin = user?.email === 'engineeramirshahzad11@gmail.com' || localStorage.getItem('isAdmin') === 'true';
-  if (!user && !isAdmin) {
-    return null; // Will redirect to login
+  // Check if user is the specific admin user
+  const isAdmin = user?.email === 'engineeramirshahzad11@gmail.com' || localStorage.getItem('adminEmail') === 'engineeramirshahzad11@gmail.com';
+  if (!isAdmin) {
+    return null; // Will redirect to main dashboard
   }
 
   return (

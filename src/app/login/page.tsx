@@ -22,14 +22,14 @@ export default function LoginPage() {
 
     try {
       // Hardcoded admin credentials for testing
-      if (formData.email === 'engineeramirshahzad11@gmail.com' && formData.password === '123456789') {
+      if (formData.email === 'engineeramirshahzad11@gmail.com' && formData.password === '12345678') {
         // Set admin flag in localStorage
         localStorage.setItem('isAdmin', 'true');
         localStorage.setItem('adminEmail', formData.email);
         
-        // Simulate successful login and redirect to main dashboard
+        // Simulate successful login and redirect to admin dashboard
         setTimeout(() => {
-          router.push('/'); // Redirect to main dashboard instead of admin
+          router.push('/admin'); // Redirect admin to admin dashboard
         }, 1000);
         return;
       }
@@ -38,7 +38,7 @@ export default function LoginPage() {
       const result = await login(formData.email, formData.password);
       
       if (result.success) {
-        // Redirect to main dashboard for all users
+        // Redirect regular users to main dashboard
         router.push('/');
       } else {
         if (result.error === 'Appwrite not configured') {

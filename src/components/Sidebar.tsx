@@ -15,13 +15,13 @@ const Sidebar = () => {
   useEffect(() => {
     const checkAdmin = async () => {
       if (user) {
-        // Check if user is the hardcoded admin
+        // Check if user is the specific admin user
         const adminStatus = user.email === 'engineeramirshahzad11@gmail.com';
         setIsAdmin(adminStatus);
       } else {
-        // For hardcoded admin login, we need to handle it differently
-        // since there's no real user object
-        const isHardcodedAdmin = localStorage.getItem('isAdmin') === 'true';
+        // For hardcoded admin login, check if it's the specific admin
+        const adminEmail = localStorage.getItem('adminEmail');
+        const isHardcodedAdmin = adminEmail === 'engineeramirshahzad11@gmail.com';
         setIsAdmin(isHardcodedAdmin);
       }
       setSidebarLoading(false);

@@ -34,95 +34,106 @@ export default function Dashboard() {
   }
 
   // Get user info for display
-  const userEmail = user?.email || localStorage.getItem('adminEmail') || 'zohaibishfaq.ajk@gmail.com';
-  const userName = user?.name || 'zohaib';
-  const userPhone = user?.phone || '03367516504';
+  const userEmail = user?.email || localStorage.getItem('adminEmail') || 'User';
+  const userName = user?.name || 'User';
 
   return (
     <div className="p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Breadcrumbs */}
-        <div className="mb-4">
-          <nav className="text-sm text-gray-500">
-            <span>Home</span>
-            <span className="mx-2">/</span>
-            <span>Dashboard</span>
-          </nav>
-        </div>
-
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-2">Welcome {userName}</p>
+          <p className="text-gray-600 mt-2">Welcome back, {userEmail}!</p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between">
-              <div>
+            <div className="flex items-center">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <span className="text-2xl">💰</span>
+              </div>
+              <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Balance</p>
-                <p className="text-2xl font-bold text-gray-900">$0.00</p>
+                <p className="text-2xl font-bold text-gray-900">Rs. 0</p>
               </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center">
               <div className="p-2 bg-green-100 rounded-lg">
-                <span className="text-green-600 text-lg">→</span>
+                <span className="text-2xl">📤</span>
               </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between">
-              <div>
+              <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Withdraw</p>
-                <p className="text-2xl font-bold text-gray-900">$0.00</p>
-              </div>
-              <div className="p-2 bg-pink-100 rounded-lg">
-                <span className="text-pink-600 text-lg">↓</span>
+                <p className="text-2xl font-bold text-gray-900">Rs. 0</p>
               </div>
             </div>
           </div>
 
           <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between">
-              <div>
+            <div className="flex items-center">
+              <div className="p-2 bg-purple-100 rounded-lg">
+                <span className="text-2xl">👥</span>
+              </div>
+              <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Direct</p>
                 <p className="text-2xl font-bold text-gray-900">0</p>
               </div>
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <span className="text-blue-600 text-lg">👤</span>
-              </div>
             </div>
           </div>
 
           <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between">
-              <div>
+            <div className="flex items-center">
+              <div className="p-2 bg-orange-100 rounded-lg">
+                <span className="text-2xl">🌳</span>
+              </div>
+              <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Team</p>
                 <p className="text-2xl font-bold text-gray-900">0</p>
-              </div>
-              <div className="p-2 bg-orange-100 rounded-lg">
-                <span className="text-orange-600 text-lg">👥</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-4 mb-8">
-          <button className="px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium">
-            PRIVACY POLICY
-          </button>
-          <button className="px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium">
-            CONTACT US
-          </button>
-        </div>
+        {/* Quick Actions */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <button
+              onClick={() => router.push('/create-account')}
+              className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-indigo-500 hover:bg-indigo-50 transition-colors"
+            >
+              <div className="text-center">
+                <span className="text-2xl">👤+</span>
+                <p className="mt-2 font-medium text-gray-900">Create Account</p>
+                <p className="text-sm text-gray-500">Add new user to your team</p>
+              </div>
+            </button>
 
-        {/* User Status Indicator */}
-        <div className="absolute top-6 right-6 flex flex-col items-center">
-          <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-            {userName.charAt(0).toUpperCase()}
+            <button
+              onClick={() => router.push('/buy-pin-code')}
+              className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-indigo-500 hover:bg-indigo-50 transition-colors"
+            >
+              <div className="text-center">
+                <span className="text-2xl">🔢</span>
+                <p className="mt-2 font-medium text-gray-900">Buy PIN Code</p>
+                <p className="text-sm text-gray-500">Purchase PIN codes</p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => router.push('/my-tree')}
+              className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-indigo-500 hover:bg-indigo-50 transition-colors"
+            >
+              <div className="text-center">
+                <span className="text-2xl">🌳</span>
+                <p className="mt-2 font-medium text-gray-900">View My Tree</p>
+                <p className="text-sm text-gray-500">See your team structure</p>
+              </div>
+            </button>
           </div>
-          <span className="text-xs text-green-600 font-medium mt-1">Active</span>
         </div>
       </div>
     </div>
