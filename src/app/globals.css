@@ -3,13 +3,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --navy-500: #1e3a8a;
+  --navy-600: #1e40af;
+  --deep-indigo: #283593;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +18,47 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Custom deep indigo colors to match the image */
+.bg-deep-indigo {
+  background-color: #0d1239;
+}
+
+.bg-deep-indigo-500 {
+  background-color: #3f51b5;
+}
+
+.border-deep-indigo-500 {
+  border-color: #3f51b5;
+}
+
+.text-deep-indigo-600 {
+  color: #0d1239;
+}
+
+/* Sidebar scroll styles */
+.sidebar-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.5);
 }
