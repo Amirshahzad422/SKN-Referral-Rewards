@@ -27,9 +27,9 @@ export default function LoginPage() {
         localStorage.setItem('isAdmin', 'true');
         localStorage.setItem('adminEmail', formData.email);
         
-        // Simulate successful login
+        // Simulate successful login and redirect to main dashboard
         setTimeout(() => {
-          router.push('/admin');
+          router.push('/'); // Redirect to main dashboard instead of admin
         }, 1000);
         return;
       }
@@ -38,8 +38,8 @@ export default function LoginPage() {
       const result = await login(formData.email, formData.password);
       
       if (result.success) {
-        // Redirect to admin dashboard if admin, otherwise to main dashboard
-        router.push('/admin');
+        // Redirect to main dashboard for all users
+        router.push('/');
       } else {
         if (result.error === 'Appwrite not configured') {
           setError('System is not configured. Please contact administrator.');
