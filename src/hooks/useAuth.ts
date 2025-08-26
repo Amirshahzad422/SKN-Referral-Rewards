@@ -22,10 +22,18 @@ export const useAuth = () => {
         return;
       }
 
+      // Check if account object is properly initialized
+      if (!account || typeof account.get !== 'function') {
+        console.warn('Appwrite account service not properly initialized');
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+
       const currentUser = await account.get();
       setUser(currentUser);
     } catch (error) {
-      console.log('No active session found');
+      console.log('No active session found or Appwrite not configured');
       setUser(null);
     } finally {
       setLoading(false);
@@ -36,7 +44,12 @@ export const useAuth = () => {
     try {
       // Check if Appwrite is properly configured
       if (!process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || !process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID) {
-        return { success: false, error: 'Appwrite not configured' };
+        return { success: false, error: 'Appwrite not configured. Please contact administrator.' };
+      }
+
+      // Check if account object is properly initialized
+      if (!account || typeof account.createEmailSession !== 'function') {
+        return { success: false, error: 'Authentication service not available. Please contact administrator.' };
       }
 
       const session = await account.createEmailSession(email, password);
@@ -56,6 +69,12 @@ export const useAuth = () => {
         return { success: true };
       }
 
+      // Check if account object is properly initialized
+      if (!account || typeof account.deleteSessions !== 'function') {
+        setUser(null);
+        return { success: true };
+      }
+
       await account.deleteSessions();
       setUser(null);
       return { success: true };
@@ -69,7 +88,12 @@ export const useAuth = () => {
     try {
       // Check if Appwrite is properly configured
       if (!process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || !process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID) {
-        return { success: false, error: 'Appwrite not configured' };
+        return { success: false, error: 'Appwrite not configured. Please contact administrator.' };
+      }
+
+      // Check if account object is properly initialized
+      if (!account || typeof account.create !== 'function') {
+        return { success: false, error: 'Registration service not available. Please contact administrator.' };
       }
 
       const user = await account.create('unique()', email, password, name);
