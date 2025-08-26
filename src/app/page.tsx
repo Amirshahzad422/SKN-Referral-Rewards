@@ -33,115 +33,97 @@ export default function Dashboard() {
     return null; // Will redirect to login
   }
 
-  // Check if user is admin
-  const isAdmin = user?.email === 'engineeramirshahzad11@gmail.com' || localStorage.getItem('isAdmin') === 'true';
-  const userEmail = user?.email || localStorage.getItem('adminEmail') || 'User';
+  // Get user info for display
+  const userEmail = user?.email || localStorage.getItem('adminEmail') || 'zohaibishfaq.ajk@gmail.com';
+  const userName = user?.name || 'zohaib';
+  const userPhone = user?.phone || '03367516504';
 
   return (
     <div className="p-6">
       <div className="max-w-7xl mx-auto">
+        {/* Breadcrumbs */}
+        <div className="mb-4">
+          <nav className="text-sm text-gray-500">
+            <span>Home</span>
+            <span className="mx-2">/</span>
+            <span>Dashboard</span>
+          </nav>
+        </div>
+
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-2">Welcome back, {userEmail}!</p>
-          {isAdmin && (
-            <div className="mt-2">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                Admin Access
-              </span>
-              <span className="ml-2 text-sm text-gray-500">
-                You can access admin features from the sidebar
-              </span>
-            </div>
-          )}
+          <p className="text-gray-600 mt-2">Welcome {userName}</p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <span className="text-2xl">💰</span>
-              </div>
-              <div className="ml-4">
+            <div className="flex items-center justify-between">
+              <div>
                 <p className="text-sm font-medium text-gray-600">Total Balance</p>
-                <p className="text-2xl font-bold text-gray-900">Rs. 0</p>
+                <p className="text-2xl font-bold text-gray-900">$0.00</p>
               </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
               <div className="p-2 bg-green-100 rounded-lg">
-                <span className="text-2xl">📤</span>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Withdraw</p>
-                <p className="text-2xl font-bold text-gray-900">Rs. 0</p>
+                <span className="text-green-600 text-lg">→</span>
               </div>
             </div>
           </div>
 
           <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <span className="text-2xl">👥</span>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Withdraw</p>
+                <p className="text-2xl font-bold text-gray-900">$0.00</p>
               </div>
-              <div className="ml-4">
+              <div className="p-2 bg-pink-100 rounded-lg">
+                <span className="text-pink-600 text-lg">↓</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center justify-between">
+              <div>
                 <p className="text-sm font-medium text-gray-600">Total Direct</p>
                 <p className="text-2xl font-bold text-gray-900">0</p>
               </div>
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <span className="text-blue-600 text-lg">👤</span>
+              </div>
             </div>
           </div>
 
           <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-orange-100 rounded-lg">
-                <span className="text-2xl">🌳</span>
-              </div>
-              <div className="ml-4">
+            <div className="flex items-center justify-between">
+              <div>
                 <p className="text-sm font-medium text-gray-600">Total Team</p>
                 <p className="text-2xl font-bold text-gray-900">0</p>
               </div>
+              <div className="p-2 bg-orange-100 rounded-lg">
+                <span className="text-orange-600 text-lg">👥</span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <button className="p-4 border-2 border-dashed border-gray-300 rounded-lg text-center hover:border-gray-400 transition-colors">
-              <span className="text-2xl mb-2 block">👤+</span>
-              <span className="text-sm font-medium text-gray-700">Create Account</span>
-            </button>
-            <button className="p-4 border-2 border-dashed border-gray-300 rounded-lg text-center hover:border-gray-400 transition-colors">
-              <span className="text-2xl mb-2 block">🔢</span>
-              <span className="text-sm font-medium text-gray-700">Buy Pin Code</span>
-            </button>
-            <button className="p-4 border-2 border-dashed border-gray-300 rounded-lg text-center hover:border-gray-400 transition-colors">
-              <span className="text-2xl mb-2 block">🌳</span>
-              <span className="text-sm font-medium text-gray-700">View My Tree</span>
-            </button>
-          </div>
+        {/* Action Buttons */}
+        <div className="flex gap-4 mb-8">
+          <button className="px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium">
+            PRIVACY POLICY
+          </button>
+          <button className="px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium">
+            CONTACT US
+          </button>
         </div>
 
-        {/* Admin Notice */}
-        {isAdmin && (
-          <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <span className="text-2xl">⚙️</span>
-              </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-blue-800">Admin Access Available</h3>
-                <p className="text-sm text-blue-700 mt-1">
-                  You have admin privileges. Use the sidebar to access admin features like payment management and user creation.
-                </p>
-              </div>
-            </div>
+        {/* User Status Indicator */}
+        <div className="absolute top-6 right-6 flex flex-col items-center">
+          <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+            {userName.charAt(0).toUpperCase()}
           </div>
-        )}
+          <span className="text-xs text-green-600 font-medium mt-1">Active</span>
+        </div>
       </div>
     </div>
   );

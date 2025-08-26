@@ -84,14 +84,14 @@ const Sidebar = () => {
                   <span className="text-deep-indigo-600 font-bold text-sm">SKN</span>
                 </div>
                 <h3 className="text-white font-semibold text-lg">
-                  {user ? user.name || 'Admin User' : 'Admin User'}
+                  {user ? user.name || 'zohaib' : 'zohaib'}
                 </h3>
                 <p className="text-gray-300 text-sm">
-                  {user ? user.email : localStorage.getItem('adminEmail') || 'engineeramirshahzad11@gmail.com'}
+                  {user ? user.email : 'zohaibishfaq.ajk@gmail.com'}
                 </p>
                 <div className="flex items-center mt-2">
                   <span className="text-gray-300 text-sm">
-                    {user ? user.phone || 'N/A' : 'N/A'}
+                    {user ? user.phone || '03367516504' : '03367516504'}
                   </span>
                   <button className="ml-2 text-gray-300 hover:text-white">
                     👁️
