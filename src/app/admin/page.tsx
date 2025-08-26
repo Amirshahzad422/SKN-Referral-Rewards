@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { appwriteAPI } from '@/lib/appwrite';
 
@@ -36,6 +37,7 @@ interface User {
 
 export default function AdminDashboard() {
   const { user, loading } = useAuth();
+  const router = useRouter();
   const [payments, setPayments] = useState<Payment[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
@@ -45,11 +47,13 @@ export default function AdminDashboard() {
   const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
-    if (user) {
+    if (!loading && !user) {
+      router.push('/login');
+    } else if (user) {
       loadPayments();
       loadUsers();
     }
-  }, [user]);
+  }, [user, loading, router]);
 
   const loadPayments = async () => {
     try {
@@ -131,11 +135,7 @@ export default function AdminDashboard() {
   }
 
   if (!user) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-xl">Access denied. Please login as admin.</div>
-      </div>
-    );
+    return null; // Will redirect to login
   }
 
   return (
