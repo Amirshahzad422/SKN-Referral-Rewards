@@ -19,7 +19,10 @@ const Sidebar = () => {
         const adminStatus = user.email === 'engineeramirshahzad11@gmail.com';
         setIsAdmin(adminStatus);
       } else {
-        setIsAdmin(false);
+        // For hardcoded admin login, we need to handle it differently
+        // since there's no real user object
+        const isHardcodedAdmin = localStorage.getItem('isAdmin') === 'true';
+        setIsAdmin(isHardcodedAdmin);
       }
       setSidebarLoading(false);
     };
@@ -80,10 +83,16 @@ const Sidebar = () => {
                 <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-3">
                   <span className="text-deep-indigo-600 font-bold text-sm">SKN</span>
                 </div>
-                <h3 className="text-white font-semibold text-lg">{user.name || 'Admin User'}</h3>
-                <p className="text-gray-300 text-sm">{user.email}</p>
+                <h3 className="text-white font-semibold text-lg">
+                  {user ? user.name || 'Admin User' : 'Admin User'}
+                </h3>
+                <p className="text-gray-300 text-sm">
+                  {user ? user.email : localStorage.getItem('adminEmail') || 'engineeramirshahzad11@gmail.com'}
+                </p>
                 <div className="flex items-center mt-2">
-                  <span className="text-gray-300 text-sm">{user.phone || 'N/A'}</span>
+                  <span className="text-gray-300 text-sm">
+                    {user ? user.phone || 'N/A' : 'N/A'}
+                  </span>
                   <button className="ml-2 text-gray-300 hover:text-white">
                     👁️
                   </button>
@@ -154,8 +163,10 @@ const Sidebar = () => {
             <div className="p-4 border-t border-deep-indigo-500">
               <button
                 onClick={() => {
-                  // For hardcoded admin, just redirect to login
-                  if (user.email === 'engineeramirshahzad11@gmail.com') {
+                  // For hardcoded admin, clear localStorage and redirect to login
+                  if (user?.email === 'engineeramirshahzad11@gmail.com' || localStorage.getItem('isAdmin') === 'true') {
+                    localStorage.removeItem('isAdmin');
+                    localStorage.removeItem('adminEmail');
                     window.location.href = '/login';
                   } else {
                     // For real users, use the logout function

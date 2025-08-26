@@ -6,9 +6,10 @@ import { useAuth } from '@/hooks/useAuth';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
@@ -21,7 +22,11 @@ export default function LoginPage() {
 
     try {
       // Hardcoded admin credentials for testing
-      if (formData.username === 'engineeramirshahzad11@gmail.com' && formData.password === '123456789') {
+      if (formData.email === 'engineeramirshahzad11@gmail.com' && formData.password === '123456789') {
+        // Set admin flag in localStorage
+        localStorage.setItem('isAdmin', 'true');
+        localStorage.setItem('adminEmail', formData.email);
+        
         // Simulate successful login
         setTimeout(() => {
           router.push('/admin');
@@ -30,16 +35,21 @@ export default function LoginPage() {
       }
 
       // For other users, use the actual login function
-      const result = await login(formData.username, formData.password);
+      const result = await login(formData.email, formData.password);
       
       if (result.success) {
         // Redirect to admin dashboard if admin, otherwise to main dashboard
         router.push('/admin');
       } else {
-        setError(result.error || 'Login failed');
+        if (result.error === 'Appwrite not configured') {
+          setError('System is not configured. Please contact administrator.');
+        } else {
+          setError(result.error || 'Login failed. Please check your credentials.');
+        }
       }
     } catch (err) {
-      setError('An error occurred during login');
+      console.error('Login error:', err);
+      setError('An error occurred during login. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -50,6 +60,10 @@ export default function LoginPage() {
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -121,30 +135,46 @@ export default function LoginPage() {
           {/* White Form Section */}
           <div className="px-8 py-8">
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Username Field */}
+              {/* Email Field */}
               <div>
                 <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
+                  type="email"
+                  name="email"
+                  value={formData.email}
                   onChange={handleChange}
-                  placeholder="User Name"
+                  placeholder="Email Address"
                   required
                   className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 text-gray-700 placeholder-gray-400"
                 />
               </div>
 
-              {/* Password Field */}
-              <div>
+              {/* Password Field with Toggle */}
+              <div className="relative">
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Password"
                   required
-                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 text-gray-700 placeholder-gray-400"
+                  className="w-full px-4 py-4 pr-12 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 text-gray-700 placeholder-gray-400"
                 />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  {showPassword ? (
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
+                    </svg>
+                  ) : (
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  )}
+                </button>
               </div>
 
               {/* Error Message */}
@@ -178,6 +208,18 @@ export default function LoginPage() {
                 <p className="font-medium mb-1">Admin Credentials (for testing):</p>
                 <p>Email: engineeramirshahzad11@gmail.com</p>
                 <p>Password: 123456789</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData({
+                      email: 'engineeramirshahzad11@gmail.com',
+                      password: '123456789'
+                    });
+                  }}
+                  className="mt-2 px-3 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors"
+                >
+                  Fill Admin Credentials
+                </button>
               </div>
             </form>
           </div>

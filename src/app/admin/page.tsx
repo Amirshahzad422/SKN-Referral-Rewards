@@ -49,9 +49,9 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (!loading) {
       // Check if user is the hardcoded admin
-      const isAdmin = user?.email === 'engineeramirshahzad11@gmail.com';
+      const isAdmin = user?.email === 'engineeramirshahzad11@gmail.com' || localStorage.getItem('isAdmin') === 'true';
       
-      if (!user || !isAdmin) {
+      if (!user && !isAdmin) {
         router.push('/login');
       } else {
         loadPayments();
@@ -140,8 +140,8 @@ export default function AdminDashboard() {
   }
 
   // Check if user is the hardcoded admin
-  const isAdmin = user?.email === 'engineeramirshahzad11@gmail.com';
-  if (!user || !isAdmin) {
+  const isAdmin = user?.email === 'engineeramirshahzad11@gmail.com' || localStorage.getItem('isAdmin') === 'true';
+  if (!user && !isAdmin) {
     return null; // Will redirect to login
   }
 
@@ -154,7 +154,7 @@ export default function AdminDashboard() {
           <p className="text-gray-600 mt-2">Manage payments, users, and system operations</p>
           <div className="mt-2">
             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-              Logged in as: {user.email}
+              Logged in as: {user?.email || localStorage.getItem('adminEmail') || 'Admin'}
             </span>
           </div>
         </div>
