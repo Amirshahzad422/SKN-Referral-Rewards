@@ -44,12 +44,12 @@ export const useAuth = () => {
     try {
       // Check if Appwrite is properly configured
       if (!process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || !process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID) {
-        return { success: false, error: 'Appwrite not configured. Please contact administrator.' };
+        throw new Error('Appwrite not configured');
       }
 
       // Check if account object is properly initialized
       if (!account || typeof account.createEmailSession !== 'function') {
-        return { success: false, error: 'Authentication service not available. Please contact administrator.' };
+        throw new Error('Authentication service not available');
       }
 
       const session = await account.createEmailSession(email, password);
@@ -57,7 +57,7 @@ export const useAuth = () => {
       return { success: true, session };
     } catch (error) {
       console.error('Login error:', error);
-      return { success: false, error: error instanceof Error ? error.message : 'Login failed' };
+      throw error; // Throw the error instead of returning it
     }
   };
 
